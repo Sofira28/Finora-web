@@ -1,0 +1,6 @@
+dist
+pnpm-lock.yaml
+
+# Playwright
+test-results
+playwright-report

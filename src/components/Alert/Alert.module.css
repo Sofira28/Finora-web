@@ -1,0 +1,70 @@
+.alert {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.alert > svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.body {
+  display: grid;
+  gap: 2px;
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.content {
+  margin: 0;
+  color: var(--text2);
+}
+
+.content a {
+  color: var(--lav);
+}
+
+.error {
+  border-color: color-mix(in srgb, var(--neg) 40%, transparent);
+  background: var(--neg-soft);
+}
+
+.error > svg {
+  color: var(--neg);
+}
+
+.success {
+  border-color: color-mix(in srgb, var(--pos) 40%, transparent);
+  background: var(--pos-soft);
+}
+
+.success > svg {
+  color: var(--pos);
+}
+
+.info {
+  border-color: color-mix(in srgb, var(--info) 40%, transparent);
+  background: var(--info-soft);
+}
+
+.info > svg {
+  color: var(--info);
+}
+
+.warning {
+  border-color: color-mix(in srgb, var(--warn) 40%, transparent);
+  background: var(--warn-soft);
+}
+
+.warning > svg {
+  color: var(--warn);
+}

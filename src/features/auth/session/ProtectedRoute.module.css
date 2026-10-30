@@ -1,0 +1,32 @@
+.status {
+  display: grid;
+  gap: 12px;
+  place-content: center;
+  justify-items: center;
+  min-height: 100vh;
+  padding: 20px 16px;
+  color: var(--text2);
+  text-align: center;
+}
+
+.retry {
+  min-height: var(--touch-primary);
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--violet);
+  color: var(--on-violet);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease);
+}
+
+.retry:hover {
+  background: var(--violet-hover);
+}
+
+.retry:focus-visible {
+  outline: 2px solid var(--lav);
+  outline-offset: 2px;
+}

@@ -1,0 +1,29 @@
+.main {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 20px 16px;
+}
+
+.card {
+  max-width: 420px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.logo {
+  margin: 0;
+  color: var(--lav);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.16em;
+}
+
+.tagline {
+  margin: 8px 0 0;
+  color: var(--text2);
+}
