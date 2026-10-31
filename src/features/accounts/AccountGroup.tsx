@@ -10,10 +10,11 @@ interface AccountGroupProps {
   description: string
   accounts: Account[]
   tone?: 'lav' | 'pos'
+  onEdit: (account: Account) => void
 }
 
 /** Grupo de cuentas (RF-ACC-02); no se muestra si está vacío. */
-export function AccountGroup({ title, description, accounts, tone }: AccountGroupProps) {
+export function AccountGroup({ title, description, accounts, tone, onEdit }: AccountGroupProps) {
   const titleId = useId()
   if (accounts.length === 0) return null
   return (
@@ -24,7 +25,7 @@ export function AccountGroup({ title, description, accounts, tone }: AccountGrou
       <p className={styles.groupDescription}>{description}</p>
       <ul className={styles.list}>
         {accounts.map((account) => (
-          <AccountItem key={account.id} account={account} tone={tone} />
+          <AccountItem key={account.id} account={account} tone={tone} onEdit={onEdit} />
         ))}
       </ul>
     </section>

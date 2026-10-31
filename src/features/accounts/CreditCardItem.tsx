@@ -1,13 +1,20 @@
 import { WarningIcon } from '../../components/icons/index.ts'
 import { formatMoney } from '../../lib/format/index.ts'
 import type { Account } from './api.ts'
+import { EditButton } from './AccountItem.tsx'
 import styles from './Accounts.module.css'
 
 /**
  * Tarjeta de crédito (RF-ACC-03): deuda, cupo, cupo disponible, uso del cupo y días de corte
  * y pago. Los cálculos llegan del backend; aquí solo se muestran.
  */
-export function CreditCardItem({ account }: { account: Account }) {
+export function CreditCardItem({
+  account,
+  onEdit,
+}: {
+  account: Account
+  onEdit: (account: Account) => void
+}) {
   const card = account.credit_card
   if (!card) return null
   // Deuda negativa = saldo a favor (casos borde de la spec §11). Solo se mira el signo.
@@ -24,9 +31,12 @@ export function CreditCardItem({ account }: { account: Account }) {
         <span className={styles.cardName}>{account.name}</span>
       </div>
       <div className={styles.cardBody}>
-        <div>
-          <h3 className={styles.cardTitle}>{account.name}</h3>
-          {account.institution && <p className={styles.itemDetails}>{account.institution}</p>}
+        <div className={styles.cardHeader}>
+          <div>
+            <h3 className={styles.cardTitle}>{account.name}</h3>
+            {account.institution && <p className={styles.itemDetails}>{account.institution}</p>}
+          </div>
+          <EditButton account={account} onEdit={onEdit} />
         </div>
         <div>
           <p className={styles.cardLabel}>{inFavor ? 'Saldo a favor' : 'Deuda pendiente'}</p>

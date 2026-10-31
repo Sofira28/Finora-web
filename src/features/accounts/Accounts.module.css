@@ -410,3 +410,140 @@
     opacity: 0.9;
   }
 }
+
+/* --- Acciones y avisos ------------------------------------------------------------------- */
+
+.notice {
+  margin-bottom: 20px;
+}
+
+.itemActions {
+  display: flex;
+  flex: none;
+  gap: 2px;
+}
+
+.iconButton {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--touch-nav);
+  height: var(--touch-nav);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-nav);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background: var(--elev);
+  color: var(--text);
+}
+
+.cardHeader {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* --- Formulario -------------------------------------------------------------------------- */
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.types {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.typesLegend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--text2);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.typeOption {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: var(--touch-primary);
+  padding: 8px 10px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-nav);
+  background: var(--input-bg);
+  font-size: 14px;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+/* El radio nativo queda accesible y operable con flechas; se ve la tarjeta. */
+.typeOption input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.typeOption > svg {
+  flex: none;
+  color: var(--text2);
+}
+
+.typeOption:has(input:checked) {
+  border-color: var(--violet);
+  background: var(--lav-soft);
+  color: var(--lav);
+}
+
+.typeOption:has(input:checked) > svg {
+  color: var(--lav);
+}
+
+.typeOption:has(input:focus-visible) {
+  outline: 2px solid var(--lav);
+  outline-offset: 2px;
+}
+
+.fixedType {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.fixedTypeLabel {
+  color: var(--text2);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.fieldHint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
