@@ -38,8 +38,17 @@ afterEach(() => {
   setCsrfToken(null)
 })
 
+// La página Cuentas pide su listado; aquí basta con que no tenga cuentas.
+const NO_ACCOUNTS = {
+  accounts: [],
+  totals: { available_balance: '0.00', net_worth: '0.00', credit_card_debt: '0.00' },
+}
+
 async function renderShell(url = '/') {
-  mockApi({ 'GET /auth/session': () => json(200, ACTIVE) })
+  mockApi({
+    'GET /auth/session': () => json(200, ACTIVE),
+    'GET /accounts': () => json(200, NO_ACCOUNTS),
+  })
   const view = renderApp(url)
   await screen.findByRole('navigation', { name: 'Navegación principal' })
   return view
@@ -68,14 +77,26 @@ describe('AppShell (T-ACC-FE-02)', () => {
       'page',
     )
     expect(within(nav).getByRole('link', { name: 'Inicio' })).not.toHaveAttribute('aria-current')
-    expect(await screen.findByRole('heading', { level: 1, name: 'Cuentas' })).toBeVisible()
+    expect(
+      await screen.findByRole(
+        'heading',
+        { level: 1, name: 'Cuentas y tarjetas' },
+        { timeout: 5000 },
+      ),
+    ).toBeVisible()
   })
 
   it('navega entre secciones y lleva el foco al contenido', async () => {
     const { router } = await renderShell()
     const nav = screen.getByRole('navigation', { name: 'Navegación principal' })
     await userEvent.click(within(nav).getByRole('link', { name: 'Cuentas' }))
-    expect(await screen.findByRole('heading', { level: 1, name: 'Cuentas' })).toBeVisible()
+    expect(
+      await screen.findByRole(
+        'heading',
+        { level: 1, name: 'Cuentas y tarjetas' },
+        { timeout: 5000 },
+      ),
+    ).toBeVisible()
     expect(router.state.location.pathname).toBe('/cuentas')
     expect(screen.getByRole('main')).toHaveFocus()
   })

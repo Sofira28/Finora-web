@@ -1,0 +1,412 @@
+/* Página Cuentas y tarjetas: medidas y colores del prototipo (FINORA.dc.html, "accounts"). */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fn-in 200ms var(--ease);
+}
+
+/* --- Totales ----------------------------------------------------------------------------- */
+
+.summary {
+  display: grid;
+  gap: 12px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--hero-bg);
+}
+
+.totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 40px;
+  margin: 0;
+}
+
+.total {
+  display: grid;
+  flex: 1 1 220px;
+  gap: 4px;
+  align-content: start;
+  min-width: 0;
+}
+
+.totalLabel {
+  color: var(--text2);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.totalValue {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.totalPrimary {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.totalAmount {
+  font-weight: 650;
+  font-size: 24px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.totalHint {
+  max-width: 44ch;
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* --- Grupos y filas ---------------------------------------------------------------------- */
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.groups:empty {
+  display: none;
+}
+
+/* Lado a lado solo dentro de .groups; en la columna de la página, alto natural. */
+.groups > .group {
+  flex: 1 1 420px;
+}
+
+.group,
+.empty {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.empty {
+  display: grid;
+  gap: 4px;
+}
+
+.groupTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.groupDescription {
+  display: block;
+  margin: 2px 0 8px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.itemIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-control);
+  background: var(--lav-soft);
+  color: var(--lav);
+}
+
+.itemIcon[data-tone='pos'] {
+  background: var(--pos-soft);
+  color: var(--pos);
+}
+
+.itemText {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.itemDetails {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.itemBalance {
+  font-weight: 650;
+  font-size: 16px;
+  line-height: 1.3;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* --- Tarjetas de crédito ----------------------------------------------------------------- */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex: 1 1 440px;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.cardVisual {
+  position: relative;
+  align-self: flex-start;
+  display: grid;
+  flex: 0 0 260px;
+  grid-template: auto 1fr auto auto / 1fr auto;
+  max-width: 100%;
+  aspect-ratio: 1.586;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  color: #f1eeff; /* Texto fijo: la tarjeta es oscura en ambos temas. */
+}
+
+.cardVisual::before,
+.cardVisual::after {
+  position: absolute;
+  border: 1px solid rgba(197, 183, 255, 0.25);
+  border-radius: 50%;
+  content: '';
+}
+
+.cardVisual::before {
+  top: -60px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+}
+
+.cardVisual::after {
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+}
+
+.cardBrand {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+}
+
+.cardKind {
+  font-weight: 500;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.cardNumber {
+  grid-row: 3;
+  grid-column: 1 / -1;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  opacity: 0.9;
+}
+
+.cardName {
+  grid-row: 4;
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.cardBody {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cardTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.cardLabel {
+  margin: 0;
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.cardDebt {
+  margin: 0;
+  font-weight: 650;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.usageTrack {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--elev);
+}
+
+.usageBar {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--violet);
+}
+
+.usageBar[data-over] {
+  background: var(--neg);
+}
+
+.cardFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 6px 0 0;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.cardFacts > div {
+  display: flex;
+  gap: 4px;
+}
+
+.cardFacts dd {
+  margin: 0;
+}
+
+.cardFacts > div:last-child {
+  margin-left: auto;
+}
+
+.overLimit {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-nav);
+  background: var(--neg-soft);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.overLimit > svg {
+  flex: none;
+  color: var(--neg);
+}
+
+/* --- Archivadas -------------------------------------------------------------------------- */
+
+.archived > .list {
+  margin-top: 8px;
+}
+
+.archivedSummary {
+  display: grid;
+  min-height: var(--touch-primary);
+  align-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.archivedSummary .groupDescription {
+  margin-bottom: 0;
+}
+
+/* --- Carga ------------------------------------------------------------------------------- */
+
+.skeleton {
+  height: 220px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  animation: fn-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton[data-size='summary'] {
+  height: 140px;
+}
+
+@keyframes fn-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes fn-shimmer {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
