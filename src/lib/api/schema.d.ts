@@ -346,6 +346,80 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v1/accounts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List Accounts
+     * @description Activas y archivadas; los totales solo cuentan las activas (RN-ACC-03 a 05 y 09).
+     */
+    get: operations['list_accounts_api_v1_accounts_get']
+    put?: never
+    /** Create Account */
+    post: operations['create_account_api_v1_accounts_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/accounts/{account_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get Account */
+    get: operations['get_account_api_v1_accounts__account_id__get']
+    put?: never
+    post?: never
+    /** Delete Account */
+    delete: operations['delete_account_api_v1_accounts__account_id__delete']
+    options?: never
+    head?: never
+    /** Update Account */
+    patch: operations['update_account_api_v1_accounts__account_id__patch']
+    trace?: never
+  }
+  '/api/v1/accounts/{account_id}/archive': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Archive Account */
+    post: operations['archive_account_api_v1_accounts__account_id__archive_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/accounts/{account_id}/restore': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Restore Account */
+    post: operations['restore_account_api_v1_accounts__account_id__restore_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -355,6 +429,51 @@ export interface components {
       /** Message */
       message: string
     }
+    /** AccountListResponse */
+    AccountListResponse: {
+      /** Accounts */
+      accounts: components['schemas']['AccountResponse'][]
+      totals: components['schemas']['TotalsResponse']
+    }
+    /** AccountResponse */
+    AccountResponse: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string
+      /** Name */
+      name: string
+      type: components['schemas']['AccountType']
+      /** Institution */
+      institution: string | null
+      /**
+       * Opening Balance
+       * @example 1250000.00
+       */
+      opening_balance: string
+      /**
+       * Balance
+       * @example 1250000.00
+       */
+      balance: string
+      /** Has Movements */
+      has_movements: boolean
+      /** Archived */
+      archived: boolean
+      credit_card: components['schemas']['CreditCardResponse'] | null
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string
+    }
+    /**
+     * AccountType
+     * @description RN-ACC-01.
+     * @enum {string}
+     */
+    AccountType: 'bank' | 'wallet' | 'cash' | 'savings' | 'investment' | 'credit_card'
     /** ChangePasswordRequest */
     ChangePasswordRequest: {
       /** Current Password */
@@ -366,6 +485,49 @@ export interface components {
     CodeRequest: {
       /** Code */
       code: string
+    }
+    /**
+     * CreateAccountRequest
+     * @description RF-ACC-01. Los campos de tarjeta son obligatorios en tarjetas y prohibidos en el resto.
+     */
+    CreateAccountRequest: {
+      /** Name */
+      name: string
+      type: components['schemas']['AccountType']
+      /** Institution */
+      institution?: string | null
+      /**
+       * Opening Balance
+       * @example 1250000.50
+       */
+      opening_balance: string
+      /** Credit Limit */
+      credit_limit?: string | null
+      /** Statement Day */
+      statement_day?: number | null
+      /** Payment Due Day */
+      payment_due_day?: number | null
+    }
+    /** CreditCardResponse */
+    CreditCardResponse: {
+      /**
+       * Credit Limit
+       * @example 1250000.00
+       */
+      credit_limit: string
+      /**
+       * Available Credit
+       * @example 1250000.00
+       */
+      available_credit: string
+      /** Usage Percent */
+      usage_percent: number
+      /** Over Limit */
+      over_limit: boolean
+      /** Statement Day */
+      statement_day: number
+      /** Payment Due Day */
+      payment_due_day: number
     }
     /** DeleteAccountRequest */
     DeleteAccountRequest: {
@@ -487,6 +649,44 @@ export interface components {
       name: string
       /** Email */
       email: string
+    }
+    /** TotalsResponse */
+    TotalsResponse: {
+      /**
+       * Available Balance
+       * @example 1250000.00
+       */
+      available_balance: string
+      /**
+       * Net Worth
+       * @example 1250000.00
+       */
+      net_worth: string
+      /**
+       * Credit Card Debt
+       * @example 1250000.00
+       */
+      credit_card_debt: string
+    }
+    /**
+     * UpdateAccountRequest
+     * @description RF-ACC-05/06: solo cambia lo que se envía. El tipo no se puede cambiar (RN-ACC-08).
+     *
+     *     `institution: null` borra la entidad; `null` en los demás campos es un error.
+     */
+    UpdateAccountRequest: {
+      /** Name */
+      name?: string | null
+      /** Institution */
+      institution?: string | null
+      /** Opening Balance */
+      opening_balance?: string | null
+      /** Credit Limit */
+      credit_limit?: string | null
+      /** Statement Day */
+      statement_day?: number | null
+      /** Payment Due Day */
+      payment_due_day?: number | null
     }
     /** ValidationError */
     ValidationError: {
@@ -1138,6 +1338,216 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  list_accounts_api_v1_accounts_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountListResponse']
+        }
+      }
+    }
+  }
+  create_account_api_v1_accounts_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateAccountRequest']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  get_account_api_v1_accounts__account_id__get: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        account_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  delete_account_api_v1_accounts__account_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        account_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  update_account_api_v1_accounts__account_id__patch: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        account_id: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateAccountRequest']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  archive_account_api_v1_accounts__account_id__archive_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        account_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  restore_account_api_v1_accounts__account_id__restore_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        account_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AccountResponse']
+        }
       }
       /** @description Validation Error */
       422: {

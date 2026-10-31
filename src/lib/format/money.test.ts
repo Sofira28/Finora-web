@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatMoney } from './money.ts'
+import { formatMoney, parseMoneyInput, toMoneyInput } from './money.ts'
 
 // Intl separa el símbolo con un espacio sin ruptura (U+00A0).
 const nbsp = ' '
@@ -35,4 +35,78 @@ describe('formatMoney (COP)', () => {
       expect(() => formatMoney(amount, 'COP')).toThrow(RangeError)
     },
   )
+})
+
+describe('parseMoneyInput', () => {
+  it.each([
+    ['1250000', '1250000'],
+    ['1.250.000', '1250000'],
+    ['1250000,5', '1250000.5'],
+    ['1.250.000,50', '1250000.50'],
+    [`$ 1.250.000`, '1250000'],
+    [`$${nbsp}1.250.000`, '1250000'],
+    ['$1.250.000', '1250000'],
+    ['  2.800.000  ', '2800000'],
+    ['0', '0'],
+    ['0,10', '0.10'],
+    ['-150.000', '-150000'],
+    ['− 150.000', '-150000'],
+    [`−$${nbsp}30.000`, '-30000'], // lo que muestra formatMoney
+    ['-0', '0'],
+    ['007', '7'],
+    ['1.250', '1250'], // el punto es de miles
+    ['999.999.999.999.999,99', '999999999999999.99'],
+    ['123.456.789.012.345,67', '123456789012345.67'], // más que Number.MAX_SAFE_INTEGER, exacto
+  ])('convierte %j en %j', (text, expected) => {
+    expect(parseMoneyInput(text)).toBe(expected)
+  })
+
+  it.each([
+    '',
+    '   ',
+    'abc',
+    '1,250,000', // coma de miles (formato en inglés)
+    '1250000.5', // punto decimal
+    '1.25', // grupo de miles incompleto
+    '12.5000',
+    '1.250.000,123', // tres decimales
+    '1,',
+    ',5',
+    '1e6',
+    '--5',
+    '+5',
+    '$',
+    '1 250 000',
+    '1234567890123456', // 16 dígitos enteros
+  ])('rechaza %j', (text) => {
+    expect(parseMoneyInput(text)).toBeNull()
+  })
+})
+
+describe('toMoneyInput', () => {
+  it.each([
+    ['2800000.00', '2.800.000'],
+    ['2800000.50', '2.800.000,5'],
+    ['0.10', '0,1'],
+    ['1250.25', '1.250,25'],
+    ['999', '999'],
+    ['-150000.00', '-150.000'],
+    ['0.0000', '0'],
+  ])('muestra %j como %j', (amount, expected) => {
+    expect(toMoneyInput(amount)).toBe(expected)
+  })
+
+  it.each([
+    ['2800000.00', '2800000'],
+    ['2800000.50', '2800000.5'],
+    ['-150000.00', '-150000'],
+    ['0.10', '0.1'],
+    ['1250.25', '1250.25'],
+  ])('vuelve a leerse como el mismo monto: %s', (amount, parsed) => {
+    expect(parseMoneyInput(toMoneyInput(amount))).toBe(parsed)
+  })
+
+  it('rechaza lo que no es una cadena decimal', () => {
+    expect(() => toMoneyInput('1.250.000')).toThrow(RangeError)
+  })
 })

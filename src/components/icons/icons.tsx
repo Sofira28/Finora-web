@@ -130,3 +130,165 @@ export function FinoraLogo(props: IconProps) {
     </svg>
   )
 }
+
+// --- Tipos de cuenta (FEAT-ACC, RN-ACC-01) ------------------------------------------------
+
+export function BankIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3 9.5 12 4l9 5.5" />
+      <path d="M4 20h16" />
+      <path d="M6 10.5v6.5M10 10.5v6.5M14 10.5v6.5M18 10.5v6.5" />
+    </Icon>
+  )
+}
+
+export function WalletIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+      <path d="M10.5 18.5h3" />
+    </Icon>
+  )
+}
+
+export function CashIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="2.5" y="6" width="19" height="12" rx="2" />
+      <circle cx="12" cy="12" r="2.5" />
+      <path d="M6 9.5v.01M18 14.5v.01" />
+    </Icon>
+  )
+}
+
+export function SavingsIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M5 11a7 6 0 0 1 12.5-3.5H20v4l-1.5 1A7 6 0 0 1 15 17v3h-3v-2h-2v2H7v-3.5A6 6 0 0 1 5 11Z" />
+      <path d="M9.5 7.5h3" />
+      <path d="M15.5 10.5v.01" />
+    </Icon>
+  )
+}
+
+export function InvestmentIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="m3 17 6-6 4 4 8-8" />
+      <path d="M15 7h6v6" />
+    </Icon>
+  )
+}
+
+export function CreditCardIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="2.5" y="5" width="19" height="14" rx="2" />
+      <path d="M2.5 10h19" />
+      <path d="M6.5 15h4" />
+    </Icon>
+  )
+}
+
+// --- Navegación y acciones ----------------------------------------------------------------
+
+export function HomeIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3.5 10.5 12 3.5l8.5 7" />
+      <path d="M5.5 9v11h13V9" />
+      <path d="M10 20v-5h4v5" />
+    </Icon>
+  )
+}
+
+export function UserIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20.5a8 8 0 0 1 16 0" />
+    </Icon>
+  )
+}
+
+export function LogoutIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M9.5 20.5h-4a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h4" />
+      <path d="m15.5 16.5 4.5-4.5-4.5-4.5" />
+      <path d="M20 12H9.5" />
+    </Icon>
+  )
+}
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  )
+}
+
+export function MoreIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 5.5v.01M12 12v.01M12 18.5v.01" strokeWidth="3" />
+    </Icon>
+  )
+}
+
+export function EditIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z" />
+      <path d="m13.5 6.5 4 4" />
+    </Icon>
+  )
+}
+
+export function ArchiveIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="3" y="4" width="18" height="4.5" rx="1" />
+      <path d="M5 8.5V19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5" />
+      <path d="M10 12.5h4" />
+    </Icon>
+  )
+}
+
+export function RestoreIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" />
+      <path d="M3.5 3.5V8H8" />
+    </Icon>
+  )
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 6.5h16" />
+      <path d="M9.5 6.5V4h5v2.5" />
+      <path d="M6 6.5 7 20h10l1-13.5" />
+      <path d="M10 10.5v6M14 10.5v6" />
+    </Icon>
+  )
+}
+
+export function ChevronLeftIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="m14.5 6-6 6 6 6" />
+    </Icon>
+  )
+}
+
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="m6 9.5 6 6 6-6" />
+    </Icon>
+  )
+}
