@@ -1,0 +1,60 @@
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.checkbox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  align-items: start;
+  color: var(--text2);
+  font-size: 14px;
+}
+
+.checkbox input {
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--violet);
+}
+
+.checkbox a,
+.link {
+  color: var(--lav);
+  font-weight: 500;
+}
+
+.checkboxError {
+  /* Fuera del label (no forma parte del nombre del checkbox), alineado con su texto. */
+  margin: -8px 0 0 30px;
+  color: var(--neg);
+  font-size: 13px;
+}
+
+.divider {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  flex: 1;
+  height: 1px;
+  background: var(--border-soft);
+  content: '';
+}
+
+.note {
+  margin: 0;
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+}
+
+.note a {
+  color: var(--lav);
+}

@@ -1,0 +1,81 @@
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-primary);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-control);
+  background: var(--input-bg);
+  transition: border-color 160ms var(--ease);
+}
+
+.control:focus-within {
+  border-color: var(--lav);
+  outline: 2px solid var(--lav);
+  outline-offset: 2px;
+}
+
+.invalid {
+  border-color: var(--neg);
+}
+
+.input {
+  flex: 1;
+  /* Sin ancho intrínseco (unos 20 caracteres): si no, impone su mínimo a la columna y
+     la página se desborda a 320 px (WCAG 1.4.10). `flex: 1` le da el ancho real. */
+  width: 0;
+  min-width: 0;
+  min-height: calc(var(--touch-primary) - 2px);
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.input:focus {
+  /* El foco se dibuja en el contenedor, que incluye el botón de la derecha. */
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+.trailing {
+  display: flex;
+  padding-right: 4px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.error {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: 0;
+  color: var(--neg);
+  font-size: 13px;
+}
+
+.error svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}

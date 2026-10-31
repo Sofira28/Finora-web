@@ -1,0 +1,135 @@
+/*
+ * Tokens de diseño de FINORA.
+ * Fuente: docs/guides/claude-design.md (extraídos de FINORA.dc.html, 29/10/2026).
+ * Tema oscuro por defecto en :root; tema claro en [data-theme='light'].
+ * No modificar valores sin actualizar la guía.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Superficies y fondos */
+  --bg: #090d1b;
+  --surface: #141a30;
+  --elev: #1b223b;
+  --input-bg: #0f1428;
+  --side-bg: #0c1122;
+  --header-bg: rgba(9, 13, 27, 0.86);
+  --hero-bg: linear-gradient(135deg, #1f2648 0%, #141a30 64%);
+  --card-bg: linear-gradient(140deg, #2b2558 0%, #1b223b 58%, #141a30 100%);
+  --ambient:
+    radial-gradient(900px 520px at 88% -14%, rgba(155, 131, 255, 0.1), transparent 62%),
+    radial-gradient(700px 480px at -10% 40%, rgba(141, 175, 255, 0.05), transparent 60%);
+  --overlay: rgba(4, 6, 14, 0.68);
+  --shadow: 0 12px 32px rgba(2, 4, 12, 0.45);
+
+  /* Marca y texto */
+  --violet: #9b83ff;
+  --violet-hover: #b3a3ff;
+  --violet-pressed: #7861d8;
+  --on-violet: #090d1b;
+  --on-neg: #1b0a10;
+  --lav: #c5b7ff;
+  --lav-soft: rgba(155, 131, 255, 0.15);
+  --text: #f1eeff;
+  --text2: #b3bbd0;
+  --muted: #8d96ae;
+  --border: #39415e;
+  --border-soft: rgba(57, 65, 94, 0.55);
+  --border-input: #646e8e;
+  --grid: rgba(141, 150, 174, 0.16);
+
+  /* Estados semánticos */
+  --pos: #48d6b0;
+  --pos-soft: rgba(72, 214, 176, 0.12);
+  --neg: #ff8296;
+  --neg-soft: rgba(255, 130, 150, 0.12);
+  --warn: #ffd18b;
+  --warn-soft: rgba(255, 209, 139, 0.12);
+  --info: #8dafff;
+  --info-soft: rgba(141, 175, 255, 0.12);
+
+  /* Colores de categoría */
+  --c-vivienda: #9b83ff;
+  --c-mercado: #8dafff;
+  --c-transporte: #66c6e0;
+  --c-restaurantes: #e79ad0;
+  --c-servicios: #d9b97e;
+  --c-salud: #a6d47e;
+  --c-entretenimiento: #f2b6a0;
+  --c-suscripciones: #c9a0f5;
+  --c-deudas: #a8b3cf;
+  --c-salario: #48d6b0;
+  --c-freelance: #7fe3c8;
+  --c-otros_ing: #9fe0d0;
+  --c-sin: #8d96ae;
+
+  /* Otros */
+  --font: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --radius-nav: 10px;
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-pill: 99px;
+  --touch-nav: 40px;
+  --touch-primary: 44px;
+}
+
+/*
+ * Tema claro: valores literales del diseño.
+ * Pendiente CD-01 (aprobación del tema claro), CD-02 (--pos sobre --elev, 4,23:1)
+ * y CD-03 (--border-input, < 3:1). No se activa desde la interfaz hasta resolverlos.
+ */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f5f3fb;
+  --surface: #ffffff;
+  --elev: #eeebf8;
+  --input-bg: #ffffff;
+  --side-bg: #fbfafe;
+  --header-bg: rgba(245, 243, 251, 0.88);
+  --hero-bg: linear-gradient(135deg, #ece6ff 0%, #ffffff 66%);
+  --card-bg: linear-gradient(140deg, #3a2f7a 0%, #262e52 60%, #1b223b 100%);
+  --ambient: radial-gradient(900px 520px at 88% -14%, rgba(106, 80, 216, 0.08), transparent 62%);
+  --overlay: rgba(20, 24, 46, 0.45);
+  --shadow: 0 12px 32px rgba(40, 36, 90, 0.14);
+
+  --violet: #6a50d8;
+  --violet-hover: #5a41c6;
+  --violet-pressed: #4b34ad;
+  --on-violet: #ffffff;
+  --on-neg: #ffffff;
+  --lav: #5b45c2;
+  --lav-soft: rgba(106, 80, 216, 0.1);
+  --text: #14182e;
+  --text2: #434a66;
+  --muted: #5c6482;
+  --border: #dcd8eb;
+  --border-soft: #e8e5f2;
+  --border-input: #8a90aa;
+  --grid: rgba(92, 100, 130, 0.16);
+
+  --pos: #0b7f61;
+  --pos-soft: rgba(11, 127, 97, 0.1);
+  --neg: #c2304b;
+  --neg-soft: rgba(194, 48, 75, 0.09);
+  --warn: #8a5a00;
+  --warn-soft: rgba(138, 90, 0, 0.1);
+  --info: #2f5bc4;
+  --info-soft: rgba(47, 91, 196, 0.09);
+
+  --c-vivienda: #6a50d8;
+  --c-mercado: #3d68c9;
+  --c-transporte: #1e7f9a;
+  --c-restaurantes: #b0458f;
+  --c-servicios: #8c6a1f;
+  --c-salud: #4f7f23;
+  --c-entretenimiento: #b0573a;
+  --c-suscripciones: #8649c9;
+  --c-deudas: #5d6787;
+  --c-salario: #0b7f61;
+  --c-freelance: #12977a;
+  --c-otros_ing: #2e8f7a;
+  --c-sin: #5c6482;
+}

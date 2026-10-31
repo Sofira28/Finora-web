@@ -1,0 +1,95 @@
+/* Contenedor del perfil dentro de AppShell. */
+.card {
+  display: grid;
+  gap: 24px;
+  max-width: 720px;
+  padding: 8px 24px 28px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 8px 32px 32px;
+  }
+}
+
+.section {
+  display: grid;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 4px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-weight: 650;
+  font-size: 17px;
+}
+
+.sectionText {
+  margin: 0;
+  color: var(--text2);
+}
+
+.facts {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: auto 1fr;
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--text2);
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.qr {
+  justify-self: center;
+  width: 200px;
+  height: 200px;
+  padding: 8px;
+  border-radius: var(--radius-control);
+  background: #fff; /* El QR necesita fondo claro para leerse con cualquier cámara. */
+}
+
+.secret {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+}
+
+.codes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-control);
+  background: var(--input-bg);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  list-style: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.status {
+  color: var(--pos);
+  font-weight: 600;
+}

@@ -1,0 +1,30 @@
+.google {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-primary);
+  padding: 0 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--elev);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 160ms var(--ease);
+}
+
+.google:hover {
+  border-color: var(--border-input);
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  /* El logo de Google necesita fondo blanco para mantener sus colores en el tema oscuro. */
+  background: #fff;
+}
