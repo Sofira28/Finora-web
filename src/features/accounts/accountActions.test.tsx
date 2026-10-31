@@ -89,7 +89,7 @@ function available(): string {
 }
 
 describe('menú de acciones', () => {
-  it('cuentas activas: editar, archivar y eliminar', async () => {
+  it('cuentas activas: editar, ajustar saldo, archivar y eliminar', async () => {
     const { container } = setup([NOMINA])
     const button = await screen.findByRole('button', { name: 'Acciones de Nómina' }, SLOW)
     expect(button).toHaveAttribute('aria-expanded', 'false')
@@ -99,7 +99,7 @@ describe('menú de acciones', () => {
     const items = within(region)
       .getAllByRole('button')
       .map((b) => b.textContent)
-    expect(items).toEqual(['', 'Editar', 'Archivar', 'Eliminar'])
+    expect(items).toEqual(['', 'Editar', 'Ajustar saldo', 'Archivar', 'Eliminar'])
     await expectNoAxeViolations(container)
 
     await userEvent.keyboard('{Escape}')

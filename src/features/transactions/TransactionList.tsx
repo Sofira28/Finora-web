@@ -1,5 +1,5 @@
 import { ActionsMenu } from '../../components/index.ts'
-import { EditIcon } from '../../components/icons/index.ts'
+import { EditIcon, TrashIcon } from '../../components/icons/index.ts'
 import { formatDate } from '../../lib/format/index.ts'
 import { useMediaQuery } from '../../lib/hooks/useMediaQuery.ts'
 import type { Sort, Transaction } from './api.ts'
@@ -21,6 +21,7 @@ interface TransactionListProps {
   sort: Sort
   onSort: (sort: Sort) => void
   onEdit: (transaction: Transaction) => void
+  onDelete: (transaction: Transaction) => void
 }
 
 /** Lista de movimientos (RF-TRX-04): tabla en tablet y escritorio, lista en móvil. */
@@ -30,6 +31,7 @@ export function TransactionList({
   sort,
   onSort,
   onEdit,
+  onDelete,
 }: TransactionListProps) {
   const isTable = useMediaQuery(TABLE)
   const isWide = useMediaQuery(WIDE)
@@ -43,6 +45,14 @@ export function TransactionList({
           icon: EditIcon,
           onSelect: () => {
             onEdit(row.transaction)
+          },
+        },
+        {
+          label: 'Eliminar',
+          icon: TrashIcon,
+          danger: true,
+          onSelect: () => {
+            onDelete(row.transaction)
           },
         },
       ]}

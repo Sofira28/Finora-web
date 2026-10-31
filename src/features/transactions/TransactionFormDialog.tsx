@@ -52,6 +52,9 @@ export interface TransactionFormDialogProps {
   transaction?: Transaction
   /** Tipo y cuenta iniciales de un movimiento nuevo (p. ej. "Ajustar saldo" desde Cuentas). */
   defaults?: NewTransactionDefaults
+  /** Título y descripción propios (p. ej. "Ajustar saldo de Nómina"). */
+  title?: string
+  description?: string
   onClose: () => void
   onSaved: (transaction: Transaction) => void
   /** El movimiento ya no existe (`404`): quien abre el diálogo lo cierra y avisa. */
@@ -63,6 +66,8 @@ export function TransactionFormDialog({
   accounts,
   transaction,
   defaults,
+  title: customTitle,
+  description: customDescription,
   onClose,
   onSaved,
   onNotFound,
@@ -88,7 +93,7 @@ export function TransactionFormDialog({
   const account = accounts.find((item) => item.id === accountId)
   const categorized = type === 'expense' || type === 'income'
 
-  const title = isEdit ? 'Editar movimiento' : 'Nuevo movimiento'
+  const title = customTitle ?? (isEdit ? 'Editar movimiento' : 'Nuevo movimiento')
 
   if (options.length === 0) {
     return (
@@ -138,7 +143,8 @@ export function TransactionFormDialog({
       open
       title={title}
       description={
-        isEdit ? undefined : 'Registra un gasto, un ingreso, una transferencia o un ajuste.'
+        customDescription ??
+        (isEdit ? undefined : 'Registra un gasto, un ingreso, una transferencia o un ajuste.')
       }
       onClose={onClose}
     >

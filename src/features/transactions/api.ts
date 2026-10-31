@@ -45,3 +45,8 @@ export function createTransaction(body: TransactionBody): Promise<Transaction> {
 export function replaceTransaction(id: string, body: TransactionBody): Promise<Transaction> {
   return apiRequest(`/transactions/${encodeURIComponent(id)}`, { method: 'PUT', body })
 }
+
+/** `DELETE /transactions/{id}` (RF-TRX-08): definitivo; los saldos se recalculan. */
+export function deleteTransaction(id: string): Promise<void> {
+  return apiRequest(`/transactions/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}

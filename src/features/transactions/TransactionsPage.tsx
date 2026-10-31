@@ -1,9 +1,12 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-import { Alert, Button, PageHeader } from '../../components/index.ts'
+import { Alert, Button, ConfirmDialog, PageHeader } from '../../components/index.ts'
 import { PlusIcon } from '../../components/icons/index.ts'
 import { useAccounts } from '../accounts/useAccounts.ts'
+import { errorMessage } from '../auth/shared/formErrors.ts'
+import { ApiError } from '../../lib/api/index.ts'
+import { formatDate } from '../../lib/format/index.ts'
 import type { Transaction } from './api.ts'
 import {
   clearFilters,
@@ -19,7 +22,8 @@ import { TRANSACTION_MESSAGES } from './messages.ts'
 import { TransactionList } from './TransactionList.tsx'
 import styles from './Transactions.module.css'
 import { TransactionSummary } from './TransactionSummary.tsx'
-import { useTransactions } from './useTransactions.ts'
+import { transactionAmount, transactionDescription } from './transactionDisplay.ts'
+import { useDeleteTransaction, useTransactions } from './useTransactions.ts'
 
 /** Movimientos (FEAT-TRX): filtros en la URL, resumen, lista y "Cargar más" (RF-TRX-04 a 06, 09). */
 type FormState = { mode: 'create' } | { mode: 'edit'; transaction: Transaction } | null
@@ -29,6 +33,8 @@ export function TransactionsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [formState, setFormState] = useState<FormState>(null)
   const [notice, setNotice] = useState<Notice>(null)
+  const [toDelete, setToDelete] = useState<Transaction | null>(null)
+  const remove = useDeleteTransaction()
   const accounts = useAccounts()
   const accountList = useMemo(() => accounts.data?.accounts ?? [], [accounts.data])
 
@@ -60,6 +66,27 @@ export function TransactionsPage() {
   const openEdit = (transaction: Transaction) => {
     setNotice(null)
     setFormState({ mode: 'edit', transaction })
+  }
+
+  const openDelete = (transaction: Transaction) => {
+    setNotice(null)
+    remove.reset()
+    setToDelete(transaction)
+  }
+  const confirmDelete = (transaction: Transaction) => {
+    remove.mutate(transaction.id, {
+      onSuccess: () => {
+        setToDelete(null)
+        setNotice({ variant: 'success', text: 'Eliminamos el movimiento.' })
+      },
+      onError: (error) => {
+        // Ya no existía (otra pestaña, otro dispositivo): se cierra y la lista se recarga.
+        if (error instanceof ApiError && error.status === 404) {
+          setToDelete(null)
+          setNotice({ variant: 'error', text: TRANSACTION_MESSAGES.notFound })
+        }
+      },
+    })
   }
 
   const header = (
@@ -174,6 +201,7 @@ export function TransactionsPage() {
                 setFilters({ ...filters, sort })
               }}
               onEdit={openEdit}
+              onDelete={openDelete}
             />
             <div className={styles.more}>
               <p className={styles.moreText}>
@@ -198,6 +226,31 @@ export function TransactionsPage() {
           </div>
         )}
       </div>
+      {toDelete && (
+        <ConfirmDialog
+          open
+          title="¿Eliminar este movimiento?"
+          description="Se borrará definitivamente y los saldos de tus cuentas se recalcularán. Esta acción no se puede deshacer."
+          confirmLabel="Eliminar movimiento"
+          variant="danger"
+          loading={remove.isPending}
+          error={remove.isError ? errorMessage(remove.error) : undefined}
+          onConfirm={() => {
+            confirmDelete(toDelete)
+          }}
+          onClose={() => {
+            setToDelete(null)
+          }}
+        >
+          <p className={styles.deleteSummary}>
+            {[
+              transactionDescription(toDelete, accountName),
+              formatDate(toDelete.date),
+              transactionAmount(toDelete),
+            ].join(' · ')}
+          </p>
+        </ConfirmDialog>
+      )}
       {formState && (
         <TransactionFormDialog
           accounts={accountList}

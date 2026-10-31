@@ -8,6 +8,7 @@ import {
 import { accountsQueryKey } from '../accounts/api.ts'
 import {
   createTransaction,
+  deleteTransaction,
   fetchTransactions,
   replaceTransaction,
   type TransactionBody,
@@ -52,4 +53,10 @@ export function useSaveTransaction() {
       request.id ? replaceTransaction(request.id, request.body) : createTransaction(request.body),
     onSettled: invalidate,
   })
+}
+
+/** Elimina un movimiento; también recarga si ya no existía (`404`). */
+export function useDeleteTransaction() {
+  const invalidate = useInvalidateLedger()
+  return useMutation({ mutationFn: deleteTransaction, onSettled: invalidate })
 }

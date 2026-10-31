@@ -38,6 +38,8 @@ export interface AccountFormDialogProps {
   onSaved: (account: Account) => void
   /** La cuenta ya no existe (`404`): quien abre el diálogo lo cierra y avisa. */
   onNotFound: () => void
+  /** Con saldo bloqueado (VAL-ACC-07): abre "Ajustar saldo" en lugar de editarlo. */
+  onAdjust?: (account: Account) => void
 }
 
 /** Alta y edición de cuentas (RF-ACC-01, 05 y 06). Se monta abierto. */
@@ -46,6 +48,7 @@ export function AccountFormDialog({
   onClose,
   onSaved,
   onNotFound,
+  onAdjust,
 }: AccountFormDialogProps) {
   const isEdit = account !== undefined
   const form = useForm<AccountFormValues>({
@@ -157,6 +160,18 @@ export function AccountFormDialog({
           error={errors.openingBalance?.message}
           {...form.register('openingBalance')}
         />
+        {lockedBalance && onAdjust && (
+          <div>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                onAdjust(account)
+              }}
+            >
+              Ajustar saldo
+            </Button>
+          </div>
+        )}
         {isCard && (
           <>
             <MoneyField

@@ -1,15 +1,26 @@
 import { type ActionItem, ActionsMenu } from '../../components/index.ts'
-import { ArchiveIcon, EditIcon, RestoreIcon, TrashIcon } from '../../components/icons/index.ts'
+import {
+  AdjustmentIcon,
+  ArchiveIcon,
+  EditIcon,
+  RestoreIcon,
+  TrashIcon,
+} from '../../components/icons/index.ts'
 import type { Account } from './api.ts'
 
 export interface AccountHandlers {
   edit: (account: Account) => void
+  /** Registra un ajuste con el saldo real (FEAT-TRX, RF-TRX-03). */
+  adjust: (account: Account) => void
   archive: (account: Account) => void
   restore: (account: Account) => void
   remove: (account: Account) => void
 }
 
-/** Acciones de una cuenta: activas (editar, archivar, eliminar) o archivadas (reactivar, eliminar). */
+/**
+ * Acciones de una cuenta: activas (editar, ajustar saldo, archivar, eliminar) o archivadas
+ * (reactivar, eliminar). Una archivada no recibe movimientos (RN-TRX-08).
+ */
 export function AccountActions({
   account,
   handlers,
@@ -42,6 +53,13 @@ export function AccountActions({
           icon: EditIcon,
           onSelect: () => {
             handlers.edit(account)
+          },
+        },
+        {
+          label: 'Ajustar saldo',
+          icon: AdjustmentIcon,
+          onSelect: () => {
+            handlers.adjust(account)
           },
         },
         {

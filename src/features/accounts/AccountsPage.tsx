@@ -13,6 +13,7 @@ import { groupAccounts } from './accountTypes.ts'
 import type { Account, AccountList } from './api.ts'
 import { ArchivedSection } from './ArchivedSection.tsx'
 import { CreditCardItem } from './CreditCardItem.tsx'
+import { TransactionFormDialog } from '../transactions/TransactionFormDialog.tsx'
 import { ACCOUNT_MESSAGES } from './messages.ts'
 import { TotalsSummary } from './TotalsSummary.tsx'
 import { useAccountAction, useAccounts } from './useAccounts.ts'
@@ -34,6 +35,7 @@ export function AccountsPage() {
   const [formState, setFormState] = useState<FormState>(null)
   const [notice, setNotice] = useState<Notice>(null)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
+  const [adjusting, setAdjusting] = useState<Account | null>(null)
 
   const closeConfirmation = () => {
     setConfirmation(null)
@@ -90,6 +92,10 @@ export function AccountsPage() {
     edit: (account) => {
       setNotice(null)
       setFormState({ mode: 'edit', account })
+    },
+    adjust: (account) => {
+      setNotice(null)
+      setAdjusting(account)
     },
     archive: (account) => {
       setNotice(null)
@@ -196,6 +202,29 @@ export function AccountsPage() {
           onNotFound={() => {
             setFormState(null)
             setNotice({ variant: 'error', text: ACCOUNT_MESSAGES.notFound })
+          }}
+          onAdjust={(account) => {
+            setFormState(null)
+            setAdjusting(account)
+          }}
+        />
+      )}
+      {adjusting && accounts.data && (
+        <TransactionFormDialog
+          accounts={accounts.data.accounts}
+          defaults={{ type: 'adjustment', accountId: adjusting.id }}
+          title={`Ajustar saldo de ${adjusting.name}`}
+          description="Escribe el saldo real; guardamos la diferencia como un ajuste de saldo."
+          onClose={() => {
+            setAdjusting(null)
+          }}
+          onSaved={() => {
+            setNotice({ variant: 'success', text: `Ajustamos el saldo de ${adjusting.name}.` })
+            setAdjusting(null)
+          }}
+          // Un movimiento nuevo no responde 404; se cierra por si acaso.
+          onNotFound={() => {
+            setAdjusting(null)
           }}
         />
       )}
