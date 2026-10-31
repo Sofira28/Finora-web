@@ -5,7 +5,7 @@ import { ChevronLeftIcon, FinoraLogo } from '../../components/icons/index.ts'
 import { NAV_ITEMS } from './navigation.ts'
 import { ProfileMenu } from './ProfileMenu.tsx'
 import { readSidebarCollapsed, writeSidebarCollapsed } from './sidebarPreference.ts'
-import { useMediaQuery } from './useMediaQuery.ts'
+import { useMediaQuery } from '../../lib/hooks/useMediaQuery.ts'
 import styles from './AppShell.module.css'
 
 // Rangos de docs/guides/claude-design.md §3.

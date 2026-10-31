@@ -9,7 +9,8 @@ import { connectApiEvents, createQueryClient } from '../app/queryClient.ts'
 import { routes } from '../app/routes.tsx'
 import type { SessionInfo } from '../features/auth/session/index.ts'
 
-type Handler = (body: unknown) => Response | Promise<Response>
+/** Recibe el cuerpo enviado y la URL completa (para revisar la query). */
+type Handler = (body: unknown, url: URL) => Response | Promise<Response>
 
 /** "MÉTODO /ruta" de una llamada a fetch, sin /api/v1 ni query. */
 function routeKey(input: RequestInfo | URL, init?: RequestInit): string {
@@ -56,7 +57,8 @@ export function mockApi(handlers: Record<string, Handler>) {
     const key = routeKey(input, init)
     const handler = all[key]
     if (!handler) throw new Error(`Petición sin simulación: ${key}`)
-    return handler(parseBody(init))
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+    return handler(parseBody(init), new URL(url, 'http://localhost'))
   })
   vi.stubGlobal('fetch', fetchMock)
   return {

@@ -203,6 +203,46 @@ export function HomeIcon(props: IconProps) {
   )
 }
 
+/** Ingreso: flecha que entra. */
+export function IncomeIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M17 7 7 17" />
+      <path d="M16 17H7V8" />
+    </Icon>
+  )
+}
+
+/** Gasto: flecha que sale. */
+export function ExpenseIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M7 17 17 7" />
+      <path d="M8 7h9v9" />
+    </Icon>
+  )
+}
+
+/** Ajuste de saldo: controles deslizantes. */
+export function AdjustmentIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
+      <circle cx="16" cy="7" r="2" />
+      <circle cx="8" cy="17" r="2" />
+    </Icon>
+  )
+}
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4.5 4.5" />
+    </Icon>
+  )
+}
+
 /** Movimientos (FEAT-TRX): flechas en sentidos opuestos. */
 export function TransactionsIcon(props: IconProps) {
   return (
