@@ -13,19 +13,32 @@ import { RegisterPage } from '../features/auth/register/RegisterPage.tsx'
 import { GuestRoute, ProtectedRoute } from '../features/auth/session/index.ts'
 import { VerifyEmailPage } from '../features/auth/verify-email/VerifyEmailPage.tsx'
 import { NotFoundPage } from './NotFoundPage.tsx'
+import { AppShell } from './shell/AppShell.tsx'
 
 // Rutas del plan de authentication §3.
 export const routes: RouteObject[] = [
   {
     element: <ProtectedRoute />,
     children: [
-      { index: true, element: <HomePage /> },
       {
-        path: 'perfil',
-        // Se descarga al entrar: solo la usa quien ya inició sesión.
-        lazy: async () => ({
-          Component: (await import('../features/auth/profile/ProfilePage.tsx')).ProfilePage,
-        }),
+        // Estructura de la aplicación (plan de accounts §3.1).
+        element: <AppShell />,
+        children: [
+          { index: true, element: <HomePage /> },
+          {
+            path: 'cuentas',
+            lazy: async () => ({
+              Component: (await import('../features/accounts/AccountsPage.tsx')).AccountsPage,
+            }),
+          },
+          {
+            path: 'perfil',
+            // Se descarga al entrar: solo la usa quien ya inició sesión.
+            lazy: async () => ({
+              Component: (await import('../features/auth/profile/ProfilePage.tsx')).ProfilePage,
+            }),
+          },
+        ],
       },
     ],
   },

@@ -56,6 +56,7 @@ export async function login(
 
 export async function logout(page: Page) {
   await page.goto('/')
+  await page.getByRole('button', { name: 'Menú de perfil' }).click()
   await page.getByRole('button', { name: 'Cerrar sesión' }).click()
   await expect(page.getByRole('heading', { name: 'Inicia sesión' })).toBeVisible()
 }

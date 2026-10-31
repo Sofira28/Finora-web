@@ -11,21 +11,13 @@ export interface AuthLayoutProps {
   children: ReactNode
   /** Enlaces al pie (p. ej. "¿No tienes cuenta? Regístrate"). */
   footer?: ReactNode
-  /** Más ancho, para páginas con varias secciones (p. ej. el perfil). */
-  wide?: boolean
 }
 
 /** Marco común de las pantallas de autenticación (CD-04: derivado de los tokens). */
-export function AuthLayout({
-  title,
-  description,
-  children,
-  footer,
-  wide = false,
-}: AuthLayoutProps) {
+export function AuthLayout({ title, description, children, footer }: AuthLayoutProps) {
   return (
     <main className={styles.page}>
-      <div className={[styles.card, wide && styles.wide].filter(Boolean).join(' ')}>
+      <div className={styles.card}>
         <Link to="/" className={styles.brand} aria-label="FINORA, ir al inicio">
           <FinoraLogo />
           <span aria-hidden="true">FINORA</span>

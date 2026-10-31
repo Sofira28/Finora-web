@@ -310,6 +310,7 @@ describe('inicio provisional y cierre de sesión (RF-AUTH-06)', () => {
     await expectNoAxeViolations(container)
     client.setQueryData(['datos', 'del', 'usuario'], { saldo: '1000' })
 
+    await userEvent.click(screen.getByRole('button', { name: 'Menú de perfil' }))
     await userEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
     await waitFor(() => {
       expect(router.state.location.pathname).toBe('/iniciar-sesion')

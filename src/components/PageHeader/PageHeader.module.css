@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  animation: fn-in 200ms var(--ease);
+}
+
+.text {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin: 6px 0 0;
+  color: var(--text2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 26px;
+  }
+}
+
+@keyframes fn-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

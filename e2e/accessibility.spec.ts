@@ -152,7 +152,10 @@ test.describe('solo con teclado (WCAG 2.1.1 y 2.4.7)', () => {
     await page.keyboard.press('Enter') // enviar desde el campo
     await expect(page.getByRole('heading', { name: 'Hola, Ana' })).toBeVisible()
 
-    await tabTo(page, 'Ir a mi perfil')
+    // Menú de perfil del encabezado (AppShell).
+    await tabTo(page, 'Menú de perfil')
+    await page.keyboard.press('Enter')
+    await tabTo(page, 'Mi perfil')
     await page.keyboard.press('Enter')
     await expect(page.getByRole('heading', { name: 'Tus datos' })).toBeVisible()
 
@@ -168,6 +171,8 @@ test.describe('solo con teclado (WCAG 2.1.1 y 2.4.7)', () => {
     ).toBeFocused()
 
     await page.goto('/')
+    await tabTo(page, 'Menú de perfil')
+    await page.keyboard.press('Enter')
     await tabTo(page, 'Cerrar sesión')
     await page.keyboard.press('Enter')
     await expect(page.getByRole('heading', { name: 'Inicia sesión' })).toBeVisible()

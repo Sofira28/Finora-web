@@ -1,3 +1,21 @@
+/* Contenedor del perfil dentro de AppShell. */
+.card {
+  display: grid;
+  gap: 24px;
+  max-width: 720px;
+  padding: 8px 24px 28px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 8px 32px 32px;
+  }
+}
+
 .section {
   display: grid;
   gap: 16px;

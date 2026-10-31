@@ -48,7 +48,8 @@ test('cuenta completa: registro, MFA, recuperación y eliminación', async ({ pa
   })
 
   await test.step('perfil: cambio de nombre', async () => {
-    await page.getByRole('link', { name: 'Ir a mi perfil' }).click()
+    await page.getByRole('button', { name: 'Menú de perfil' }).click()
+    await page.getByRole('link', { name: 'Mi perfil' }).click()
     await page.getByLabel('Nombre').fill('Ana María')
     await page.getByRole('button', { name: 'Guardar nombre' }).click()
     await expect(page.getByText('Guardamos tu nombre.')).toBeVisible()
