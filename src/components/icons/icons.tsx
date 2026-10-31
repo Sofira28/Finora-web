@@ -203,6 +203,18 @@ export function HomeIcon(props: IconProps) {
   )
 }
 
+/** Movimientos (FEAT-TRX): flechas en sentidos opuestos. */
+export function TransactionsIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 8h15" />
+      <path d="m15 4 4 4-4 4" />
+      <path d="M20 16H5" />
+      <path d="m9 12-4 4 4 4" />
+    </Icon>
+  )
+}
+
 export function UserIcon(props: IconProps) {
   return (
     <Icon {...props}>

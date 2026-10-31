@@ -71,7 +71,7 @@ describe('AppShell (T-ACC-FE-02)', () => {
     const names = within(nav)
       .getAllByRole('link')
       .map((link) => link.textContent)
-    expect(names).toEqual(['FINORA Tu dinero, más claro', 'Inicio', 'Cuentas'])
+    expect(names).toEqual(['FINORA Tu dinero, más claro', 'Inicio', 'Movimientos', 'Cuentas'])
     expect(within(nav).getByRole('link', { name: 'Cuentas' })).toHaveAttribute(
       'aria-current',
       'page',
@@ -99,6 +99,20 @@ describe('AppShell (T-ACC-FE-02)', () => {
     ).toBeVisible()
     expect(router.state.location.pathname).toBe('/cuentas')
     expect(screen.getByRole('main')).toHaveFocus()
+  })
+
+  it('abre Movimientos desde la navegación (RF-TRX-10)', async () => {
+    const { router } = await renderShell()
+    const nav = screen.getByRole('navigation', { name: 'Navegación principal' })
+    await userEvent.click(within(nav).getByRole('link', { name: 'Movimientos' }))
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Movimientos' }, { timeout: 5000 }),
+    ).toBeVisible()
+    expect(router.state.location.pathname).toBe('/movimientos')
+    expect(within(nav).getByRole('link', { name: 'Movimientos' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
   })
 
   it('el perfil vive dentro de la estructura', async () => {

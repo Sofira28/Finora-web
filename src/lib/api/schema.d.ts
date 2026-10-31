@@ -420,6 +420,49 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v1/transactions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List Transactions
+     * @description RF-TRX-04 a 06: página, total y resumen de todo lo que cumple los filtros.
+     */
+    get: operations['list_transactions_api_v1_transactions_get']
+    put?: never
+    /** Create Transaction */
+    post: operations['create_transaction_api_v1_transactions_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/transactions/{transaction_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get Transaction */
+    get: operations['get_transaction_api_v1_transactions__transaction_id__get']
+    /**
+     * Replace Transaction
+     * @description RF-TRX-07: reemplazo completo; el tipo puede cambiar.
+     */
+    put: operations['replace_transaction_api_v1_transactions__transaction_id__put']
+    post?: never
+    /** Delete Transaction */
+    delete: operations['delete_transaction_api_v1_transactions__transaction_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -474,6 +517,25 @@ export interface components {
      * @enum {string}
      */
     AccountType: 'bank' | 'wallet' | 'cash' | 'savings' | 'investment' | 'credit_card'
+    /**
+     * Category
+     * @description Catálogo fijo inicial (RN-TRX-07, CD-10); `budgets` lo reemplazará.
+     * @enum {string}
+     */
+    Category:
+      | 'housing'
+      | 'groceries'
+      | 'transport'
+      | 'restaurants'
+      | 'utilities'
+      | 'health'
+      | 'entertainment'
+      | 'subscriptions'
+      | 'debts'
+      | 'salary'
+      | 'freelance'
+      | 'other_income'
+      | 'uncategorized'
     /** ChangePasswordRequest */
     ChangePasswordRequest: {
       /** Current Password */
@@ -650,6 +712,39 @@ export interface components {
       /** Email */
       email: string
     }
+    /**
+     * Sort
+     * @enum {string}
+     */
+    Sort: 'date_desc' | 'date_asc' | 'amount_desc' | 'amount_asc'
+    /**
+     * SummaryResponse
+     * @description RN-TRX-05, sobre todos los movimientos que cumplen los filtros.
+     */
+    SummaryResponse: {
+      /** Count */
+      count: number
+      /**
+       * Income
+       * @example 1250000.00
+       */
+      income: string
+      /**
+       * Expense
+       * @example 1250000.00
+       */
+      expense: string
+      /**
+       * Savings
+       * @example 1250000.00
+       */
+      savings: string
+      /**
+       * Transfers
+       * @example 1250000.00
+       */
+      transfers: string
+    }
     /** TotalsResponse */
     TotalsResponse: {
       /**
@@ -668,6 +763,92 @@ export interface components {
        */
       credit_card_debt: string
     }
+    /** TransactionPageResponse */
+    TransactionPageResponse: {
+      /** Items */
+      items: components['schemas']['TransactionResponse'][]
+      /** Total */
+      total: number
+      /** Next Cursor */
+      next_cursor: string | null
+      summary: components['schemas']['SummaryResponse']
+    }
+    /**
+     * TransactionRequest
+     * @description RF-TRX-01 a 03 y 07 (POST y PUT). Campos por tipo: api-contracts.md §6.3.
+     */
+    TransactionRequest: {
+      type: components['schemas']['TransactionType']
+      /** Amount */
+      amount?: string | null
+      /** Target Balance */
+      target_balance?: string | null
+      /**
+       * Date
+       * Format: date
+       * @example 2026-10-30
+       */
+      date: string
+      /**
+       * Account Id
+       * Format: uuid
+       */
+      account_id: string
+      /** Destination Account Id */
+      destination_account_id?: string | null
+      category?: components['schemas']['Category'] | null
+      /** Description */
+      description?: string | null
+      /** Note */
+      note?: string | null
+    }
+    /** TransactionResponse */
+    TransactionResponse: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string
+      type: components['schemas']['TransactionType']
+      /**
+       * Amount
+       * @example 1250000.00
+       */
+      amount: string
+      /**
+       * Date
+       * Format: date
+       */
+      date: string
+      /**
+       * Account Id
+       * Format: uuid
+       */
+      account_id: string
+      /** Destination Account Id */
+      destination_account_id: string | null
+      category: components['schemas']['Category'] | null
+      /** Description */
+      description: string | null
+      /** Note */
+      note: string | null
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string
+    }
+    /**
+     * TransactionType
+     * @description RN-TRX-01.
+     * @enum {string}
+     */
+    TransactionType: 'expense' | 'income' | 'transfer' | 'adjustment'
     /**
      * UpdateAccountRequest
      * @description RF-ACC-05/06: solo cambia lo que se envía. El tipo no se puede cambiar (RN-ACC-08).
@@ -1548,6 +1729,173 @@ export interface operations {
         content: {
           'application/json': components['schemas']['AccountResponse']
         }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  list_transactions_api_v1_transactions_get: {
+    parameters: {
+      query?: {
+        q?: string | null
+        from?: string | null
+        to?: string | null
+        type?: components['schemas']['TransactionType'] | null
+        category?: components['schemas']['Category'] | null
+        account_id?: string | null
+        sort?: components['schemas']['Sort']
+        cursor?: string | null
+        limit?: number
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionPageResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  create_transaction_api_v1_transactions_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TransactionRequest']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  get_transaction_api_v1_transactions__transaction_id__get: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        transaction_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  replace_transaction_api_v1_transactions__transaction_id__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        transaction_id: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TransactionRequest']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  delete_transaction_api_v1_transactions__transaction_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        transaction_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Validation Error */
       422: {

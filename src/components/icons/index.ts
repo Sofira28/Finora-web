@@ -20,6 +20,7 @@ export {
   RestoreIcon,
   SavingsIcon,
   SuccessIcon,
+  TransactionsIcon,
   TrashIcon,
   UserIcon,
   WalletIcon,

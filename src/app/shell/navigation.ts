@@ -1,6 +1,6 @@
 import type { ComponentType, SVGProps } from 'react'
 
-import { BankIcon, HomeIcon } from '../../components/icons/index.ts'
+import { BankIcon, HomeIcon, TransactionsIcon } from '../../components/icons/index.ts'
 
 export interface NavItem {
   label: string
@@ -14,5 +14,6 @@ export interface NavItem {
  */
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Inicio', to: '/', icon: HomeIcon },
+  { label: 'Movimientos', to: '/movimientos', icon: TransactionsIcon },
   { label: 'Cuentas', to: '/cuentas', icon: BankIcon },
 ]
