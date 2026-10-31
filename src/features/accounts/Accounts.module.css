@@ -417,31 +417,6 @@
   margin-bottom: 20px;
 }
 
-.itemActions {
-  display: flex;
-  flex: none;
-  gap: 2px;
-}
-
-.iconButton {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: var(--touch-nav);
-  height: var(--touch-nav);
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-nav);
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-}
-
-.iconButton:hover {
-  background: var(--elev);
-  color: var(--text);
-}
-
 .cardHeader {
   display: flex;
   gap: 8px;

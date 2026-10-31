@@ -64,6 +64,12 @@ function setup(accounts: Account[], handlers: Record<string, Handler> = {}) {
   return { api, ...renderApp('/cuentas') }
 }
 
+/** Abre "Editar" desde el menú de acciones de la cuenta. */
+async function openEdit(name: string) {
+  await userEvent.click(await screen.findByRole('button', { name: `Acciones de ${name}` }, SLOW))
+  await userEvent.click(screen.getByRole('button', { name: 'Editar' }))
+}
+
 async function openCreate() {
   await userEvent.click(await screen.findByRole('button', { name: 'Nueva cuenta' }, SLOW))
   return screen.getByRole('dialog', { name: 'Nueva cuenta' })
@@ -263,7 +269,7 @@ describe('editar cuenta (RF-ACC-05 y 06)', () => {
     const { api } = setup([NOMINA], {
       [`PATCH /accounts/${NOMINA.id}`]: () => json(200, { ...NOMINA, name: 'Nómina principal' }),
     })
-    await userEvent.click(await screen.findByRole('button', { name: 'Editar Nómina' }, SLOW))
+    await openEdit('Nómina')
     const dialog = screen.getByRole('dialog', { name: 'Editar Nómina' })
     expect(within(dialog).queryByRole('radio')).not.toBeInTheDocument()
     expect(dialog).toHaveTextContent('Cuenta bancaria')
@@ -286,9 +292,7 @@ describe('editar cuenta (RF-ACC-05 y 06)', () => {
     const { api } = setup([TARJETA], {
       [`PATCH /accounts/${TARJETA.id}`]: () => json(200, TARJETA),
     })
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Editar Tarjeta Órbita' }, SLOW),
-    )
+    await openEdit('Tarjeta Órbita')
     const dialog = screen.getByRole('dialog')
     expect(within(dialog).getByLabelText('Cupo total')).toHaveValue('6.000.000')
     expect(within(dialog).getByLabelText('Día de corte')).toHaveValue('28')
@@ -314,7 +318,7 @@ describe('editar cuenta (RF-ACC-05 y 06)', () => {
     const { api } = setup([conMovimientos], {
       [`PATCH /accounts/${NOMINA.id}`]: () => json(200, conMovimientos),
     })
-    await userEvent.click(await screen.findByRole('button', { name: 'Editar Nómina' }, SLOW))
+    await openEdit('Nómina')
     const dialog = screen.getByRole('dialog')
     const saldo = within(dialog).getByLabelText('Saldo inicial')
     expect(saldo).toHaveAttribute('readonly')
@@ -339,7 +343,7 @@ describe('editar cuenta (RF-ACC-05 y 06)', () => {
       },
     })
     renderApp('/cuentas')
-    await userEvent.click(await screen.findByRole('button', { name: 'Editar Nómina' }, SLOW))
+    await openEdit('Nómina')
     await userEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }))
     expect(await screen.findByRole('alert')).toHaveTextContent('No encontramos esa cuenta.')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

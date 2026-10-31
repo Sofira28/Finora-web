@@ -1,9 +1,16 @@
+import type { AccountHandlers } from './AccountActions.tsx'
 import type { Account } from './api.ts'
 import { AccountItem } from './AccountItem.tsx'
 import styles from './Accounts.module.css'
 
 /** Cuentas archivadas (RF-ACC-08): plegadas por defecto; no cuentan en los totales. */
-export function ArchivedSection({ accounts }: { accounts: Account[] }) {
+export function ArchivedSection({
+  accounts,
+  handlers,
+}: {
+  accounts: Account[]
+  handlers: AccountHandlers
+}) {
   if (accounts.length === 0) return null
   return (
     <section className={styles.group} aria-label="Cuentas archivadas">
@@ -14,7 +21,7 @@ export function ArchivedSection({ accounts }: { accounts: Account[] }) {
         </summary>
         <ul className={styles.list}>
           {accounts.map((account) => (
-            <AccountItem key={account.id} account={account} />
+            <AccountItem key={account.id} account={account} handlers={handlers} />
           ))}
         </ul>
       </details>

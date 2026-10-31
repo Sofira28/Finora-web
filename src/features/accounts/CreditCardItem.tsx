@@ -1,7 +1,7 @@
 import { WarningIcon } from '../../components/icons/index.ts'
 import { formatMoney } from '../../lib/format/index.ts'
 import type { Account } from './api.ts'
-import { EditButton } from './AccountItem.tsx'
+import { AccountActions, type AccountHandlers } from './AccountActions.tsx'
 import styles from './Accounts.module.css'
 
 /**
@@ -10,10 +10,10 @@ import styles from './Accounts.module.css'
  */
 export function CreditCardItem({
   account,
-  onEdit,
+  handlers,
 }: {
   account: Account
-  onEdit: (account: Account) => void
+  handlers: AccountHandlers
 }) {
   const card = account.credit_card
   if (!card) return null
@@ -36,7 +36,7 @@ export function CreditCardItem({
             <h3 className={styles.cardTitle}>{account.name}</h3>
             {account.institution && <p className={styles.itemDetails}>{account.institution}</p>}
           </div>
-          <EditButton account={account} onEdit={onEdit} />
+          <AccountActions account={account} handlers={handlers} />
         </div>
         <div>
           <p className={styles.cardLabel}>{inFavor ? 'Saldo a favor' : 'Deuda pendiente'}</p>

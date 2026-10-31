@@ -7,5 +7,7 @@ export const ACCOUNT_MESSAGES = {
   creditLimitPositive: 'El cupo debe ser mayor que cero.',
   day: 'Elige un día entre 1 y 31.',
   hasMovements: 'Esta cuenta ya tiene movimientos. Para corregir el saldo, registra un ajuste.',
+  deleteHasMovements:
+    'Esta cuenta tiene movimientos. Puedes archivarla para ocultarla sin perder su historial.',
   notFound: 'No encontramos esa cuenta.',
 } as const

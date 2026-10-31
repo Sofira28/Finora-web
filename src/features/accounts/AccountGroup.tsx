@@ -1,5 +1,6 @@
 import { useId } from 'react'
 
+import type { AccountHandlers } from './AccountActions.tsx'
 import type { Account } from './api.ts'
 import { AccountItem } from './AccountItem.tsx'
 import styles from './Accounts.module.css'
@@ -10,11 +11,11 @@ interface AccountGroupProps {
   description: string
   accounts: Account[]
   tone?: 'lav' | 'pos'
-  onEdit: (account: Account) => void
+  handlers: AccountHandlers
 }
 
 /** Grupo de cuentas (RF-ACC-02); no se muestra si está vacío. */
-export function AccountGroup({ title, description, accounts, tone, onEdit }: AccountGroupProps) {
+export function AccountGroup({ title, description, accounts, tone, handlers }: AccountGroupProps) {
   const titleId = useId()
   if (accounts.length === 0) return null
   return (
@@ -25,7 +26,7 @@ export function AccountGroup({ title, description, accounts, tone, onEdit }: Acc
       <p className={styles.groupDescription}>{description}</p>
       <ul className={styles.list}>
         {accounts.map((account) => (
-          <AccountItem key={account.id} account={account} tone={tone} onEdit={onEdit} />
+          <AccountItem key={account.id} account={account} tone={tone} handlers={handlers} />
         ))}
       </ul>
     </section>

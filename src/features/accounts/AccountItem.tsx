@@ -1,17 +1,17 @@
-import { EditIcon } from '../../components/icons/index.ts'
 import { formatMoney } from '../../lib/format/index.ts'
+import { AccountActions, type AccountHandlers } from './AccountActions.tsx'
 import { ACCOUNT_TYPES } from './accountTypes.ts'
 import type { Account } from './api.ts'
 import styles from './Accounts.module.css'
 
 interface AccountItemProps {
   account: Account
+  handlers: AccountHandlers
   tone?: 'lav' | 'pos'
-  onEdit?: (account: Account) => void
 }
 
 /** Fila de una cuenta: ícono del tipo, nombre, tipo, entidad, saldo actual y acciones. */
-export function AccountItem({ account, tone = 'lav', onEdit }: AccountItemProps) {
+export function AccountItem({ account, handlers, tone = 'lav' }: AccountItemProps) {
   const { label, icon: Icon } = ACCOUNT_TYPES[account.type]
   const details = [label, account.institution].filter(Boolean).join(' · ')
   return (
@@ -27,35 +27,7 @@ export function AccountItem({ account, tone = 'lav', onEdit }: AccountItemProps)
         <span className="visually-hidden">Saldo: </span>
         {formatMoney(account.balance, 'COP')}
       </span>
-      {onEdit && (
-        <span className={styles.itemActions}>
-          <EditButton account={account} onEdit={onEdit} />
-        </span>
-      )}
+      <AccountActions account={account} handlers={handlers} />
     </li>
-  )
-}
-
-/** Botón de solo ícono; su nombre accesible incluye la cuenta ("Editar Nómina"). */
-export function EditButton({
-  account,
-  onEdit,
-}: {
-  account: Account
-  onEdit: (account: Account) => void
-}) {
-  const label = `Editar ${account.name}`
-  return (
-    <button
-      type="button"
-      className={styles.iconButton}
-      aria-label={label}
-      title={label}
-      onClick={() => {
-        onEdit(account)
-      }}
-    >
-      <EditIcon />
-    </button>
   )
 }

@@ -24,3 +24,18 @@ export function createAccount(body: CreateAccountBody): Promise<Account> {
 export function updateAccount(id: string, body: UpdateAccountBody): Promise<Account> {
   return apiRequest(`/accounts/${encodeURIComponent(id)}`, { method: 'PATCH', body })
 }
+
+/** `POST /accounts/{id}/archive` (RF-ACC-07); idempotente. */
+export function archiveAccount(id: string): Promise<Account> {
+  return apiRequest(`/accounts/${encodeURIComponent(id)}/archive`, { method: 'POST' })
+}
+
+/** `POST /accounts/{id}/restore` (RF-ACC-08); idempotente. */
+export function restoreAccount(id: string): Promise<Account> {
+  return apiRequest(`/accounts/${encodeURIComponent(id)}/restore`, { method: 'POST' })
+}
+
+/** `DELETE /accounts/{id}` (RF-ACC-09): definitivo; `409` si tiene movimientos. */
+export function deleteAccount(id: string): Promise<void> {
+  return apiRequest(`/accounts/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}

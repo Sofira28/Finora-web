@@ -46,7 +46,7 @@ export function AppShell() {
         Saltar al contenido
       </a>
 
-      <nav className={styles.nav} aria-label="Navegación principal">
+      <nav className={styles.nav} aria-label="Navegación principal" data-bottom-bar>
         {/* El nombre es el texto visible, eslogan incluido (WCAG 2.5.3). */}
         <Link to="/" className={styles.brand}>
           <FinoraLogo />

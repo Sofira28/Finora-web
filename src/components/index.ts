@@ -1,3 +1,4 @@
+export { type ActionItem, ActionsMenu, type ActionsMenuProps } from './ActionsMenu/ActionsMenu.tsx'
 export { Alert, type AlertProps, type AlertVariant } from './Alert/Alert.tsx'
 export { AuthLayout, type AuthLayoutProps } from './AuthLayout/AuthLayout.tsx'
 export { Button, type ButtonProps, type ButtonVariant } from './Button/Button.tsx'
