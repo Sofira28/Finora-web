@@ -7,6 +7,11 @@
   animation: fn-in 200ms var(--ease);
 }
 
+/* Aviso tras guardar o eliminar, entre el encabezado y la página. */
+.notice {
+  margin-bottom: 16px;
+}
+
 /* --- Filtros ----------------------------------------------------------------------------- */
 
 .filters {
@@ -231,6 +236,12 @@
   width: 160px;
   text-align: right;
   white-space: nowrap;
+}
+
+.table .colActions {
+  width: 56px;
+  padding: 4px 8px;
+  text-align: right;
 }
 
 .sortButton {

@@ -1,3 +1,5 @@
+import { ActionsMenu } from '../../components/index.ts'
+import { EditIcon } from '../../components/icons/index.ts'
 import { formatDate } from '../../lib/format/index.ts'
 import { useMediaQuery } from '../../lib/hooks/useMediaQuery.ts'
 import type { Sort, Transaction } from './api.ts'
@@ -18,13 +20,34 @@ interface TransactionListProps {
   accountName: (id: string) => string
   sort: Sort
   onSort: (sort: Sort) => void
+  onEdit: (transaction: Transaction) => void
 }
 
 /** Lista de movimientos (RF-TRX-04): tabla en tablet y escritorio, lista en móvil. */
-export function TransactionList({ transactions, accountName, sort, onSort }: TransactionListProps) {
+export function TransactionList({
+  transactions,
+  accountName,
+  sort,
+  onSort,
+  onEdit,
+}: TransactionListProps) {
   const isTable = useMediaQuery(TABLE)
   const isWide = useMediaQuery(WIDE)
   const rows = transactions.map((transaction) => toRow(transaction, accountName))
+  const actions = (row: Row) => (
+    <ActionsMenu
+      label={`Acciones de ${row.description}, ${row.date}`}
+      items={[
+        {
+          label: 'Editar',
+          icon: EditIcon,
+          onSelect: () => {
+            onEdit(row.transaction)
+          },
+        },
+      ]}
+    />
+  )
 
   if (!isTable) {
     return (
@@ -43,6 +66,7 @@ export function TransactionList({ transactions, accountName, sort, onSort }: Tra
               </span>
             </span>
             <AmountText row={row} />
+            {actions(row)}
           </li>
         ))}
       </ul>
@@ -85,6 +109,9 @@ export function TransactionList({ transactions, accountName, sort, onSort }: Tra
                 }}
               />
             </th>
+            <th scope="col" className={styles.colActions}>
+              <span className="visually-hidden">Acciones</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -125,6 +152,7 @@ export function TransactionList({ transactions, accountName, sort, onSort }: Tra
               <td className={styles.colAmount}>
                 <AmountText row={row} />
               </td>
+              <td className={styles.colActions}>{actions(row)}</td>
             </tr>
           ))}
         </tbody>
@@ -135,6 +163,7 @@ export function TransactionList({ transactions, accountName, sort, onSort }: Tra
 
 interface Row {
   id: string
+  transaction: Transaction
   type: Transaction['type']
   date: string
   description: string
@@ -147,6 +176,7 @@ interface Row {
 function toRow(transaction: Transaction, accountName: (id: string) => string): Row {
   return {
     id: transaction.id,
+    transaction,
     type: transaction.type,
     date: formatDate(transaction.date),
     description: transactionDescription(transaction, accountName),

@@ -134,8 +134,7 @@ function setup(url = '/movimientos', options: Setup = {}) {
   return { ...view, api, queries, last: () => Object.fromEntries(queries.at(-1) ?? []) }
 }
 
-// Montan la aplicación completa (y axe): con la suite en paralelo superan los 5 s por defecto.
-describe('Movimientos (T-TRX-FE-02)', { timeout: 15000 }, () => {
+describe('Movimientos (T-TRX-FE-02)', () => {
   it('al entrar muestra este mes, el resumen del backend y la tabla con signo y tipo', async () => {
     const { container, last } = setup()
     expect(

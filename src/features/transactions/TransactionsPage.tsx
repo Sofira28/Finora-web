@@ -1,8 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
 import { Alert, Button, PageHeader } from '../../components/index.ts'
+import { PlusIcon } from '../../components/icons/index.ts'
 import { useAccounts } from '../accounts/useAccounts.ts'
+import type { Transaction } from './api.ts'
 import {
   clearFilters,
   isRestricted,
@@ -12,14 +14,21 @@ import {
   type TransactionFilters as Filters,
 } from './filters.ts'
 import { TransactionFilters } from './TransactionFilters.tsx'
+import { TransactionFormDialog } from './TransactionFormDialog.tsx'
+import { TRANSACTION_MESSAGES } from './messages.ts'
 import { TransactionList } from './TransactionList.tsx'
 import styles from './Transactions.module.css'
 import { TransactionSummary } from './TransactionSummary.tsx'
 import { useTransactions } from './useTransactions.ts'
 
 /** Movimientos (FEAT-TRX): filtros en la URL, resumen, lista y "Cargar más" (RF-TRX-04 a 06, 09). */
+type FormState = { mode: 'create' } | { mode: 'edit'; transaction: Transaction } | null
+type Notice = { variant: 'success' | 'error'; text: string } | null
+
 export function TransactionsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [formState, setFormState] = useState<FormState>(null)
+  const [notice, setNotice] = useState<Notice>(null)
   const accounts = useAccounts()
   const accountList = useMemo(() => accounts.data?.accounts ?? [], [accounts.data])
 
@@ -44,10 +53,27 @@ export function TransactionsPage() {
   const names = useMemo(() => new Map(accountList.map((a) => [a.id, a.name])), [accountList])
   const accountName = useCallback((id: string) => names.get(id) ?? 'Cuenta no disponible', [names])
 
+  const openCreate = () => {
+    setNotice(null)
+    setFormState({ mode: 'create' })
+  }
+  const openEdit = (transaction: Transaction) => {
+    setNotice(null)
+    setFormState({ mode: 'edit', transaction })
+  }
+
   const header = (
     <PageHeader
       title="Movimientos"
       description="Historial completo de ingresos, gastos y transferencias."
+      actions={
+        accounts.isSuccess && (
+          <Button onClick={openCreate}>
+            <PlusIcon />
+            Añadir movimiento
+          </Button>
+        )
+      }
     />
   )
 
@@ -88,6 +114,11 @@ export function TransactionsPage() {
   return (
     <>
       {header}
+      {notice && (
+        <div className={styles.notice}>
+          <Alert variant={notice.variant}>{notice.text}</Alert>
+        </div>
+      )}
       <div className={styles.page}>
         <TransactionFilters filters={filters} accounts={accountList} onChange={setFilters} />
         {!first ? (
@@ -142,6 +173,7 @@ export function TransactionsPage() {
               onSort={(sort) => {
                 setFilters({ ...filters, sort })
               }}
+              onEdit={openEdit}
             />
             <div className={styles.more}>
               <p className={styles.moreText}>
@@ -166,6 +198,29 @@ export function TransactionsPage() {
           </div>
         )}
       </div>
+      {formState && (
+        <TransactionFormDialog
+          accounts={accountList}
+          transaction={formState.mode === 'edit' ? formState.transaction : undefined}
+          onClose={() => {
+            setFormState(null)
+          }}
+          onSaved={() => {
+            setFormState(null)
+            setNotice({
+              variant: 'success',
+              text:
+                formState.mode === 'create'
+                  ? 'Registramos el movimiento.'
+                  : 'Guardamos los cambios del movimiento.',
+            })
+          }}
+          onNotFound={() => {
+            setFormState(null)
+            setNotice({ variant: 'error', text: TRANSACTION_MESSAGES.notFound })
+          }}
+        />
+      )}
     </>
   )
 }

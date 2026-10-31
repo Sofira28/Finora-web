@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => {
       setupFiles: ['./src/test/setup.ts'],
       // Zona horaria fija para que las pruebas de fechas no dependan del equipo.
       env: { TZ: 'UTC' },
+      // Las pruebas que montan la aplicación completa (rutas `lazy`, axe) superan a veces los 5 s
+      // por defecto cuando corren todos los archivos en paralelo.
+      testTimeout: 15000,
     },
   }
 })

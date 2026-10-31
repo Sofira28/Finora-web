@@ -35,3 +35,13 @@ export function fetchTransactions(
   if (cursor) params.set('cursor', cursor)
   return apiRequest(`/transactions?${params.toString()}`, { signal })
 }
+
+/** `POST /transactions` (RF-TRX-01 a 03). */
+export function createTransaction(body: TransactionBody): Promise<Transaction> {
+  return apiRequest('/transactions', { method: 'POST', body })
+}
+
+/** `PUT /transactions/{id}` (RF-TRX-07): reemplaza el movimiento; el tipo puede cambiar. */
+export function replaceTransaction(id: string, body: TransactionBody): Promise<Transaction> {
+  return apiRequest(`/transactions/${encodeURIComponent(id)}`, { method: 'PUT', body })
+}
